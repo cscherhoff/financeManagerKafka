@@ -1,0 +1,3082 @@
+{
+	"info": {
+		"_postman_id": "e1a508e8-7910-402b-bab8-3a106b202121",
+		"name": "Finance App MS KAFKA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Expenses",
+			"item": [
+				{
+					"name": "Create Account 785623",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/785623?accountName={{girokontoName}}&accountType=Girokonto",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"785623"
+							],
+							"query": [
+								{
+									"key": "accountName",
+									"value": "{{girokontoName}}"
+								},
+								{
+									"key": "accountType",
+									"value": "Girokonto"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Account 55898",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/55898?accountName={{girokontoName}}&accountType=Girokonto",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"55898"
+							],
+							"query": [
+								{
+									"key": "accountName",
+									"value": "{{girokontoName}}"
+								},
+								{
+									"key": "accountType",
+									"value": "Girokonto"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post expense with overriding  the defaults",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('[{\"date\":\"2021-05-22\",\"article\":\"Batterien\",\"category\":\"Haushalt\",\"amount\":12.34,\"price\":11.11,\"overrideDefaults\":true}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"date\":\"2021-05-22\",\"article\":\"Batterien\",\"category\":\"Haushalt\",\"amount\":12.34,\"price\":11.11,\"overrideDefaults\":true}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{expensePort}}/expense/user/785623/accountName/{{girokontoName}}?overrideDefault=true",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{expensePort}}",
+							"path": [
+								"expense",
+								"user",
+								"785623",
+								"accountName",
+								"{{girokontoName}}"
+							],
+							"query": [
+								{
+									"key": "overrideDefault",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post expense without overriding  the defaults",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('[{\"date\":\"2021-05-22\",\"article\":\"Batterien\",\"category\":\"Haushalt\",\"amount\":12.34,\"price\":21.41,\"overrideDefaults\":false}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjZWRyaWMiLCJpc0FkbWluIjp0cnVlLCJleHAiOjE2MjIwNjc4ODQsImlhdCI6MTYyMjA0OTg4NH0.HdDR4ch3i9sVHcVDvxP9xuSHoAoJOSHEY329xXu2H05K4t5f2RH1lPmGm7zFo9f52zTCGx9qWBkKtOK8SeGRLA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"date\":\"2021-05-22\",\"article\":\"Batterien\",\"category\":\"Haushalt\",\"amount\":12.34,\"price\":21.41,\"overrideDefaults\":false}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{expensePort}}/expense/user/55898/accountName/{{girokontoName}}?overrideDefault=false",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{expensePort}}",
+							"path": [
+								"expense",
+								"user",
+								"55898",
+								"accountName",
+								"{{girokontoName}}"
+							],
+							"query": [
+								{
+									"key": "overrideDefault",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all expenses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"date\":\"2021-05-21\",\"article\":\"Batterien\",\"category\":\"Haushalt\",\"amount\":12.34,\"price\":11.11}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{expensePort}}/expense/user/785623",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{expensePort}}",
+							"path": [
+								"expense",
+								"user",
+								"785623"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all expenses for the month 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjZWRyaWMiLCJpc0FkbWluIjp0cnVlLCJleHAiOjE2MjIwNjc4ODQsImlhdCI6MTYyMjA0OTg4NH0.HdDR4ch3i9sVHcVDvxP9xuSHoAoJOSHEY329xXu2H05K4t5f2RH1lPmGm7zFo9f52zTCGx9qWBkKtOK8SeGRLA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{expensePort}}/expense/user/5588/month?month=6",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{expensePort}}",
+							"path": [
+								"expense",
+								"user",
+								"5588",
+								"month"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 55898",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-21.41');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(() => {}, 1500);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/55898/name/{{girokontoName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"55898",
+								"name",
+								"{{girokontoName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 785623",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-11.11');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(() => {}, 1500);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/785623/name/{{girokontoName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"785623",
+								"name",
+								"{{girokontoName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Investments",
+			"item": [
+				{
+					"name": "Create Account 131990",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990?accountName={{depotName}}&accountType=Depot",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990"
+							],
+							"query": [
+								{
+									"key": "accountName",
+									"value": "{{depotName}}"
+								},
+								{
+									"key": "accountType",
+									"value": "Depot"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('0.0');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Buy 10 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"degiro\",\"type\":\"Buy\",\"securityName\":\"bmw\",\"number\":10,\"price\":22.45,\"expenses\":1,\"totalPrice\":225.5}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Buy\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":22.45,\r\n   \"number\":10,\r\n   \"expenses\":1,\r\n   \"totalPrice\":225.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-225.5');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 10000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":10.00,\"singlePrice\":22.45,\"dividend\":0.00,\"costs\":1.00}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Buy 15 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-28\",\"depotName\":\"degiro\",\"type\":\"Buy\",\"securityName\":\"bmw\",\"number\":15,\"price\":14.67,\"expenses\":1,\"totalPrice\":221.05}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-28\",\r\n   \"type\":\"Buy\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":14.67,\r\n   \"number\":15,\r\n   \"amount\":220.05,\r\n   \"expenses\":1,\r\n   \"totalPrice\":221.05\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-446.55');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":25.00,\"singlePrice\":17.78,\"dividend\":0.00,\"costs\":2.00}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Buy 20 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-28\",\"depotName\":\"degiro\",\"type\":\"Buy\",\"securityName\":\"bmw\",\"number\":20,\"price\":15.83,\"expenses\":1,\"totalPrice\":317.6}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-28\",\r\n   \"type\":\"Buy\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":15.83,\r\n   \"number\":20,\r\n   \"amount\":316.6,\r\n   \"expenses\":1,\r\n   \"totalPrice\":317.6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-764.15');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":45.00,\"singlePrice\":16.91,\"dividend\":0.00,\"costs\":3.00}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Buy 12 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-28\",\"depotName\":\"degiro\",\"type\":\"Buy\",\"securityName\":\"bmw\",\"number\":12,\"price\":16.79,\"expenses\":1,\"totalPrice\":202.48}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-28\",\r\n   \"type\":\"Buy\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":16.79,\r\n   \"number\":12,\r\n   \"amount\":201.48,\r\n   \"expenses\":1,\r\n   \"totalPrice\":202.48\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-966.63');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":57.00,\"singlePrice\":16.88,\"dividend\":0.00,\"costs\":4.00}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Buy 8 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-28\",\"depotName\":\"degiro\",\"type\":\"Buy\",\"securityName\":\"bmw\",\"number\":8,\"price\":11.65,\"expenses\":1,\"totalPrice\":94.2}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-28\",\r\n   \"type\":\"Buy\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":11.65,\r\n   \"number\":8,\r\n   \"amount\":93.2,\r\n   \"expenses\":1,\r\n   \"totalPrice\":94.2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-1060.83');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":65.00,\"singlePrice\":16.24,\"dividend\":0.00,\"costs\":5.00}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell 3 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"degiro\",\"type\":\"Sell\",\"securityName\":\"bmw\",\"number\":3,\"price\":24.67,\"expenses\":1,\"totalPrice\":73.01}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Sell\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":24.67,\r\n   \"number\":3,\r\n   \"amount\":74.01,\r\n   \"expenses\":1,\r\n   \"totalPrice\":73.01\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 7",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-987.82');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 7",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":62.00,\"singlePrice\":16.24,\"dividend\":0.00,\"costs\":4.77}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"bmw\",\"netAbsoluteProfit\":25.29,\"grossAbsoluteProfit\":24.06,\"netPercentageProfit\":0.52,\"grossPercentageProfit\":0.49}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell 12 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"degiro\",\"type\":\"Sell\",\"securityName\":\"bmw\",\"number\":12,\"price\":25.82,\"expenses\":1,\"totalPrice\":308.84}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Sell\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":25.82,\r\n   \"number\":12,\r\n   \"amount\":309.84,\r\n   \"expenses\":1,\r\n   \"totalPrice\":308.84\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 8",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('-678.98');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 8",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":50.00,\"singlePrice\":16.24,\"dividend\":0.00,\"costs\":3.85}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"bmw\",\"netAbsoluteProfit\":140.25,\"grossAbsoluteProfit\":137.10,\"netPercentageProfit\":0.58,\"grossPercentageProfit\":0.56}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell 36 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"degiro\",\"type\":\"Sell\",\"securityName\":\"bmw\",\"number\":36,\"price\":26.07,\"expenses\":1,\"totalPrice\":937.52}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Sell\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":26.07,\r\n   \"number\":36,\r\n   \"amount\":938.52,\r\n   \"expenses\":1,\r\n   \"totalPrice\":937.52\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 9",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('258.54');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 9",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"degiro\",\"securityName\":\"bmw\",\"number\":14.00,\"singlePrice\":16.24,\"dividend\":0.00,\"costs\":1.08}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"bmw\",\"netAbsoluteProfit\":494.13,\"grossAbsoluteProfit\":487.21,\"netPercentageProfit\":0.60,\"grossPercentageProfit\":0.59}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell 14 bmw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"degiro\",\"type\":\"Sell\",\"securityName\":\"bmw\",\"number\":14,\"price\":27.95,\"expenses\":1,\"totalPrice\":390.3}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Sell\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":27.95,\r\n   \"number\":14,\r\n   \"amount\":391.3,\r\n   \"expenses\":1,\r\n   \"totalPrice\":390.3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance 10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('648.84');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131990/name/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131990",
+								"name",
+								"{{depotName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries 10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/{{pathDepotEntry}}/{{depotName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"{{pathDepotEntry}}",
+								"{{depotName}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"bmw\",\"netAbsoluteProfit\":658.07,\"grossAbsoluteProfit\":649.07,\"netPercentageProfit\":0.63,\"grossPercentageProfit\":0.62}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/131990/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"131990",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Create Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131190?accountName={{kontoName}}&accountType=Girokonto",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131190"
+							],
+							"query": [
+								{
+									"key": "accountName",
+									"value": "{{kontoName}}"
+								},
+								{
+									"key": "accountType",
+									"value": "Girokonto"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance right after creating the account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('0.0');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131190/name/{{kontoName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131190",
+								"name",
+								"{{kontoName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change account balance by adding 80.57",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('{\"bankId\":4,\"accountName\":\"Konto\",\"userId\":131190,\"accountType\":\"Girokonto\",\"balance\":80.57}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131190/name/{{kontoName}}?amount=80.57",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131190",
+								"name",
+								"{{kontoName}}"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "80.57"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance right after changing the balance by adding an amount of 80.57",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('80.57');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131190/name/{{kontoName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131190",
+								"name",
+								"{{kontoName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change account balance by subtracting 15.27",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('{\"bankId\":4,\"accountName\":\"Konto\",\"userId\":131190,\"accountType\":\"Girokonto\",\"balance\":65.30}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131190/name/{{kontoName}}?amount=-15.27",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131190",
+								"name",
+								"{{kontoName}}"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "-15.27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account balance right after changing the balance by subtracting an amount of 15.27",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('65.3');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/131190/name/{{kontoName}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"131190",
+								"name",
+								"{{kontoName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Investment-Dividend",
+			"item": [
+				{
+					"name": "Create Account 12345",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{accountPort}}/accounts/user/12345?accountName={{depotNameDividend}}&accountType=Depot",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{accountPort}}",
+							"path": [
+								"accounts",
+								"user",
+								"12345"
+							],
+							"query": [
+								{
+									"key": "accountName",
+									"value": "{{depotNameDividend}}"
+								},
+								{
+									"key": "accountType",
+									"value": "Depot"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy 10 sixt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"flatex\",\"type\":\"Buy\",\"securityName\":\"sixt\",\"number\":10,\"price\":10.48,\"expenses\":1,\"totalPrice\":105.8}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"flatex\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Buy\",\r\n   \"securityName\":\"sixt\",\r\n   \"price\":10.48,\r\n   \"number\":10,\r\n   \"expenses\":1,\r\n   \"totalPrice\":105.8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dividend sixt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"flatex\",\"type\":\"Dividend\",\"securityName\":\"sixt\",\"number\":10,\"price\":888888.88,\"expenses\":0,\"totalPrice\":2}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"flatex\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Dividend\",\r\n   \"securityName\":\"sixt\",\r\n   \"price\":888888.88,\r\n   \"number\":10,\r\n   \"amount\":111111.11,\r\n   \"expenses\":0,\r\n   \"totalPrice\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries after dividend",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"flatex\",\"securityName\":\"sixt\",\"number\":10.00,\"singlePrice\":10.48,\"dividend\":0.00,\"costs\":1.00}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"transactionId\":1,\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Kauf\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":28.45,\r\n   \"number\":15,\r\n   \"amount\":426.75,\r\n   \"expenses\":1,\r\n   \"totalAmount\":427.75\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/{{pathDepotEntry}}/{{depotNameDividend}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"{{pathDepotEntry}}",
+								"{{depotNameDividend}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits after dividend",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"sixt\",\"netAbsoluteProfit\":2.00,\"grossAbsoluteProfit\":1.00,\"netPercentageProfit\":0.02,\"grossPercentageProfit\":0.01}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell 7 sixt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"flatex\",\"type\":\"Sell\",\"securityName\":\"sixt\",\"number\":7,\"price\":20.48,\"expenses\":1,\"totalPrice\":144.36}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"flatex\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Sell\",\r\n   \"securityName\":\"sixt\",\r\n   \"price\":20.48,\r\n   \"number\":7,\r\n   \"expenses\":1,\r\n   \"totalPrice\":144.36\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries after dividend 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"depotName\":\"flatex\",\"securityName\":\"sixt\",\"number\":3.00,\"singlePrice\":10.48,\"dividend\":0.00,\"costs\":0.30}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"transactionId\":1,\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Kauf\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":28.45,\r\n   \"number\":15,\r\n   \"amount\":426.75,\r\n   \"expenses\":1,\r\n   \"totalAmount\":427.75\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/{{pathDepotEntry}}/{{depotNameDividend}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"{{pathDepotEntry}}",
+								"{{depotNameDividend}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits after dividend 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"sixt\",\"netAbsoluteProfit\":72.00,\"grossAbsoluteProfit\":69.30,\"netPercentageProfit\":0.42,\"grossPercentageProfit\":0.40}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sell 3 sixt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.body('{\"date\":\"2021-05-24\",\"depotName\":\"flatex\",\"type\":\"Sell\",\"securityName\":\"sixt\",\"number\":3,\"price\":20.48,\"expenses\":1,\"totalPrice\":62.44}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"depotName\":\"flatex\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Sell\",\r\n   \"securityName\":\"sixt\",\r\n   \"price\":20.48,\r\n   \"number\":3,\r\n   \"expenses\":1,\r\n   \"totalPrice\":62.44\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/transaction",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all depot entries after dividend 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"transactionId\":1,\r\n   \"userId\":131990,\r\n   \"depotName\":\"degiro\",\r\n   \"date\":\"2021-05-24\",\r\n   \"type\":\"Kauf\",\r\n   \"securityName\":\"bmw\",\r\n   \"price\":28.45,\r\n   \"number\":15,\r\n   \"amount\":426.75,\r\n   \"expenses\":1,\r\n   \"totalAmount\":427.75\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/{{pathDepotEntry}}/{{depotNameDividend}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"{{pathDepotEntry}}",
+								"{{depotNameDividend}}"
+							]
+						},
+						"description": "Get all depot entries after posting the second transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profits after dividend 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('[{\"securityName\":\"sixt\",\"netAbsoluteProfit\":102.00,\"grossAbsoluteProfit\":98.00,\"netPercentageProfit\":0.50,\"grossPercentageProfit\":0.48}]');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{investmentPort}}/investments/user/12345/profit",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{investmentPort}}",
+							"path": [
+								"investments",
+								"user",
+								"12345",
+								"profit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Allocation",
+			"item": [
+				{
+					"name": "Get initial income",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('0');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/income/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"income",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update income to 2458.47",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "2458.47",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/income/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"income",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get income after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('2458.47');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/income/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"income",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get initial allocation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('{\"userId\":1,\"investment\":0,\"fixCosts\":0,\"categories\":0}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"allocation",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update allocation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"investment\":496.97,\"fixCosts\":1074.31,\"categories\":428.99}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"allocation",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get allocation after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.body('{\"userId\":1,\"investment\":496.97,\"fixCosts\":1074.31,\"categories\":428.99}');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"allocation",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Try to upload invalid allocation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql('The sum of the values for investments, fix costs and categories must not be greater tha the income.The value of the sum is 52000.27 and the income is 2458.47');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"investment\":496.97,\"fixCosts\":51074.31,\"categories\":428.99}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"allocation",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fixcosts",
+			"item": [
+				{
+					"name": "Get fixcosts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:8084/fixcosts/user/54321",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8084",
+							"path": [
+								"fixcosts",
+								"user",
+								"54321"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update fixcosts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"Miete\":1752.48,\"GEZ\":17.93,\"Netflix\":\"3.52\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:8084/fixcosts/user/54321",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8084",
+							"path": [
+								"fixcosts",
+								"user",
+								"54321"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "expensePort",
+			"value": "8083"
+		},
+		{
+			"key": "investmentPort",
+			"value": "8084"
+		},
+		{
+			"key": "accountPort",
+			"value": "8082"
+		},
+		{
+			"key": "host",
+			"value": "http://localhost"
+		},
+		{
+			"key": "girokontoName",
+			"value": "girokonto"
+		},
+		{
+			"key": "depotName",
+			"value": "degiro"
+		},
+		{
+			"key": "kontoName",
+			"value": "Konto"
+		},
+		{
+			"key": "depotNameDividend",
+			"value": "flatex"
+		},
+		{
+			"key": "pathDepotEntry",
+			"value": "depotEntries"
+		},
+		{
+			"key": "allocationPort",
+			"value": "8085",
+			"type": "default"
+		}
+	]
+}

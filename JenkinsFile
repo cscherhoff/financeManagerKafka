@@ -4,14 +4,14 @@ pipeline {
         stage("Stop running microservices container") {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                  bat """docker-compose -p finance_test down --remove-orphans"""
+                  bat """docker-compose -p finance_kafka_test down --remove-orphans"""
                 }
             }
         }
         stage("Delete old docker images") {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                  bat "docker rmi -f finance_test_web-application"
+                  bat "docker rmi -f finance_kafka_test_allocator-service"
                 }
             }
         }
@@ -26,6 +26,14 @@ pipeline {
         stage("Docker webApplication") {
             steps {
                 bat "docker-compose -p finance_kafka_test -f docker-compose.yml up -d"
+            }
+        }
+        stage("Test microservices with Postman") {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                  bat """cd C:\\Users\\cesc\\AppData\\Roaming\\npm
+                  newman run --disable-unicode C:\\WINDOWS\\system32\\config\\systemprofile\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\FinanceManager-Kafka\\postman_collection.json"""
+                }
             }
         }
     }
