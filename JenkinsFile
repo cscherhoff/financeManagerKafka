@@ -17,9 +17,6 @@ pipeline {
         }
         stage("Package") {
             steps {
-                bat "cd allocator-service-ms"
-				bat """cd allocator-service-ms\allocator-service
-                mvn clean install"""
 				bat """cd allocator-service-ms
                 mvn clean install"""
 				bat "mvn clean package"
