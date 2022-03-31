@@ -24,7 +24,7 @@ pipeline {
         }
         stage("Docker webApplication") {
             steps {
-                bat "docker-compose -p finance_kafka_test -f docker-compose.yml up -d"""
+                bat "docker-compose -p finance_kafka_test -f docker-compose.yml up -d"
             }
         }
     }
