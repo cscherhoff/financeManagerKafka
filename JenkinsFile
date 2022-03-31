@@ -31,6 +31,7 @@ pipeline {
         stage("Test microservices with Postman") {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                  bat 'powershell -nop -c "& {sleep 60}"'
                   bat """cd C:\\Users\\cesc\\AppData\\Roaming\\npm
                   newman run --disable-unicode C:\\WINDOWS\\system32\\config\\systemprofile\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\FinanceManager-Kafka\\postman_collection.json"""
                 }
