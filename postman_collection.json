@@ -40,7 +40,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/income/user/1",
+							"raw": "{{host}}:{{allocationPort}}/income/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -48,14 +48,14 @@
 							"path": [
 								"income",
 								"user",
-								"1"
+								"123"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update income to 2458.47",
+					"name": "Update income to 1156.76",
 					"event": [
 						{
 							"listen": "test",
@@ -75,7 +75,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "2458.47",
+							"raw": "1156.76",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -83,7 +83,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/income/user/1",
+							"raw": "{{host}}:{{allocationPort}}/income/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -91,7 +91,7 @@
 							"path": [
 								"income",
 								"user",
-								"1"
+								"123"
 							]
 						}
 					},
@@ -106,7 +106,7 @@
 								"exec": [
 									"pm.test(\"Test response and status\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.response.to.have.body('2458.47');\r",
+									"    pm.response.to.have.body('1156.76');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -129,7 +129,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/income/user/1",
+							"raw": "{{host}}:{{allocationPort}}/income/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -137,7 +137,7 @@
 							"path": [
 								"income",
 								"user",
-								"1"
+								"123"
 							]
 						}
 					},
@@ -152,7 +152,7 @@
 								"exec": [
 									"pm.test(\"Test response and status\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.response.to.have.body('{\"userId\":1,\"investment\":0,\"fixCosts\":0,\"categories\":0}');\r",
+									"    pm.response.to.have.body('{\"userId\":123,\"investment\":0,\"fixCosts\":[],\"categories\":[]}');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -175,7 +175,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -183,7 +183,7 @@
 							"path": [
 								"allocation",
 								"user",
-								"1"
+								"123"
 							]
 						}
 					},
@@ -210,7 +210,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"investment\":496.97,\"fixCosts\":1074.31,\"categories\":428.99}",
+							"raw": "{\"userId\":123,\"investment\":200.00,\"fixCosts\":[{\"fixCostName\":\"Miete\",\"amount\":540.27},{\"fixCostName\":\"Verein\",\"amount\":15.77}],\"categories\":[{\"categoryName\":\"Haushalt\",\"budget\":301.47},{\"categoryName\":\"Reisen\",\"budget\":99.25}]}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -218,7 +218,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -226,7 +226,7 @@
 							"path": [
 								"allocation",
 								"user",
-								"1"
+								"123"
 							]
 						}
 					},
@@ -241,7 +241,7 @@
 								"exec": [
 									"pm.test(\"Test response and status\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.response.to.have.body('{\"userId\":1,\"investment\":496.97,\"fixCosts\":1074.31,\"categories\":428.99}');\r",
+									"    pm.response.to.have.body('{\"userId\":123,\"investment\":200.00,\"fixCosts\":[{\"fixCostName\":\"Miete\",\"amount\":540.27},{\"fixCostName\":\"Verein\",\"amount\":15.77}],\"categories\":[{\"categoryName\":\"Haushalt\",\"budget\":301.47},{\"categoryName\":\"Reisen\",\"budget\":99.25}]}');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -264,7 +264,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -272,7 +272,7 @@
 							"path": [
 								"allocation",
 								"user",
-								"1"
+								"123"
 							]
 						}
 					},
@@ -288,7 +288,7 @@
 									"pm.test(\"Test response and status\", function () {\r",
 									"    pm.response.to.have.status(400);\r",
 									"    const responseJson = pm.response.json();\r",
-									"    pm.expect(responseJson.message).to.eql('The sum of the values for investments, fix costs and categories must not be greater tha the income.The value of the sum is 52000.27 and the income is 2458.47');\r",
+									"    pm.expect(responseJson.message).to.eql('The sum of the values for investments, fix costs and categories must equal the income.The value of the sum is 6257.48, but the income is 1156.76');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -300,7 +300,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"investment\":496.97,\"fixCosts\":51074.31,\"categories\":428.99}",
+							"raw": "{\"userId\":123,\"investment\":400.00,\"fixCosts\":[{\"fixCostName\":\"Miete\",\"amount\":740.99},{\"fixCostName\":\"Verein\",\"amount\":15.77}],\"categories\":[{\"categoryName\":\"Haushalt\",\"budget\":5001.47},{\"categoryName\":\"Reisen\",\"budget\":99.25}]}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -308,7 +308,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}:{{allocationPort}}/allocation/user/1",
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/123",
 							"host": [
 								"{{host}}"
 							],
@@ -316,7 +316,95 @@
 							"path": [
 								"allocation",
 								"user",
-								"1"
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Try to upload negative category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql('The value of the category \\'Reisen\\' must be over zero, but is -99.25');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":123,\"investment\":400.00,\"fixCosts\":[{\"fixCostName\":\"Miete\",\"amount\":740.99},{\"fixCostName\":\"Verein\",\"amount\":15.77}],\"categories\":[{\"categoryName\":\"Haushalt\",\"budget\":5001.47},{\"categoryName\":\"Reisen\",\"budget\":-99.25}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/123",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"allocation",
+								"user",
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Try to upload negative fix cost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test response and status\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql('The value of the fix cost \\'Verein\\' must be over zero, but is -15.77');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":123,\"investment\":400.00,\"fixCosts\":[{\"fixCostName\":\"Miete\",\"amount\":740.99},{\"fixCostName\":\"Verein\",\"amount\":-15.77}],\"categories\":[{\"categoryName\":\"Haushalt\",\"budget\":5001.47},{\"categoryName\":\"Reisen\",\"budget\":99.25}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{allocationPort}}/allocation/user/123",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{allocationPort}}",
+							"path": [
+								"allocation",
+								"user",
+								"123"
 							]
 						}
 					},
